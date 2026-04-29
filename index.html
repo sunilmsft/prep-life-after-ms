@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep for Life After MS</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --accent: #27ae60;
+            --accent-hover: #219a52;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e6ed;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --highlight: #fff9e6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 2rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--accent);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Tabs */
+        .tab-nav {
+            display: flex;
+            gap: 2px;
+            overflow-x: auto;
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: rgba(255,255,255,0.7);
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border-radius: 8px 8px 0 0;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--bg);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-badge {
+            background: rgba(255,255,255,0.25);
+            border-radius: 10px;
+            padding: 1px 7px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        .tab-btn.active .tab-badge {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* Main content */
+        main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+        }
+
+        .section h2 {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h2 .icon { font-size: 1.3rem; }
+
+        .section > p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h3 {
+            font-size: 0.95rem;
+            color: var(--primary-light);
+            margin: 1.2rem 0 0.5rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Checklist items */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .checklist-item:last-child { border-bottom: none; }
+
+        .checklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.92rem;
+        }
+
+        .checklist-item.checked label {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .item-detail {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-top: 2px;
+            display: block;
+        }
+
+        .priority-high { border-left: 3px solid var(--danger); padding-left: 0.7rem; }
+        .priority-med { border-left: 3px solid var(--warning); padding-left: 0.7rem; }
+
+        /* Notes */
+        .note-area {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            margin-top: 0.5rem;
+            color: var(--text);
+        }
+
+        .note-area:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(41,128,185,0.1);
+        }
+
+        /* Info callout */
+        .callout {
+            background: var(--highlight);
+            border: 1px solid #f0dfa0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.88rem;
+        }
+
+        .callout.info {
+            background: #eaf2f8;
+            border-color: #aed6f1;
+        }
+
+        .callout.action {
+            background: #eafaf1;
+            border-color: #a9dfbf;
+        }
+
+        .callout strong { display: block; margin-bottom: 0.3rem; }
+
+        /* Date badge */
+        .date-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        /* Table for financial snapshot */
+        .fin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0;
+        }
+
+        .fin-table th, .fin-table td {
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .fin-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .fin-table td input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-family: inherit;
+            font-size: 0.88rem;
+        }
+
+        .fin-table td input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+
+        .fin-total {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.65rem;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .timeline-item.current::before {
+            background: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .timeline-desc {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* Reset / Export buttons */
+        .action-bar {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary { background: var(--primary-light); color: white; }
+        .btn-primary:hover { background: var(--primary); }
+        .btn-danger { background: #fadbd8; color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: white; }
+        .btn-outline { background: white; color: var(--primary); border: 1px solid var(--border); }
+        .btn-outline:hover { background: var(--bg); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 1.2rem 1rem 0.8rem; }
+            header h1 { font-size: 1.3rem; }
+            .tab-btn { padding: 0.5rem 0.7rem; font-size: 0.75rem; }
+            main { padding: 1rem; }
+            .section { padding: 1rem; }
+        }
+
+        /* Print */
+        @media print {
+            header { position: static; }
+            .tab-content { display: block !important; page-break-inside: avoid; }
+            .tab-nav, .action-bar, .progress-bar-container, .progress-text { display: none; }
+            .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Prep for Life After Microsoft</h1>
+        <p>Personal planning hub &mdash; 20+ years at MS &bull; Voluntary Retirement Program</p>
+        <div class="progress-text">Overall progress: <span id="progressPct">0%</span> (<span id="progressCount">0</span> of <span id="progressTotal">0</span> items)</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="timeline">&#128197; Timeline</button>
+            <button class="tab-btn" data-tab="predeparture">&#9989; Pre-Departure</button>
+            <button class="tab-btn" data-tab="financial-prep">&#128176; Financial Planner Prep</button>
+            <button class="tab-btn" data-tab="benefits">&#127973; Benefits & Insurance</button>
+            <button class="tab-btn" data-tab="net-worth">&#128200; Financial Snapshot</button>
+            <button class="tab-btn" data-tab="post-ms">&#127775; Post-MS Vision</button>
+            <button class="tab-btn" data-tab="notes">&#128221; Notes</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ===== TIMELINE ===== -->
+        <div class="tab-content active" id="tab-timeline">
+            <div class="section">
+                <h2><span class="icon">&#128197;</span> Key Timeline & Dates</h2>
+                <p>Major milestones to track through this process</p>
+
+                <div class="timeline">
+                    <div class="timeline-item current">
+                        <div class="timeline-date">Now &mdash; April 29, 2026</div>
+                        <div class="timeline-desc">Gathering information, preparing checklists, organizing financial documents. You are here.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date"><span class="date-badge">May 7, 2026</span> Offer Details Released</div>
+                        <div class="timeline-desc">Microsoft releases voluntary retirement program details. Review the severance package, timeline, benefits continuation, and any stock-related provisions.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">After May 7 &mdash; Financial Planner Meeting</div>
+                        <div class="timeline-desc">Meet with financial planner to review offer details, overall financial health, and transition plan. Bring all documents from the "Financial Planner Prep" tab.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Decision Deadline (TBD)</div>
+                        <div class="timeline-desc">Deadline to accept or decline the voluntary retirement offer. Date will be in the program details.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">If Accepting &mdash; Transition Period</div>
+                        <div class="timeline-desc">Execute all items in the Pre-Departure checklist. Roll over accounts, transition insurance, secure files, notify contacts.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Last Day at Microsoft</div>
+                        <div class="timeline-desc">Final access to systems, email, benefits. Ensure everything is transitioned before this date.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Post-MS &mdash; First 90 Days</div>
+                        <div class="timeline-desc">Decompress, activate new insurance, start exploring consulting/AI SMB venture. See "Post-MS Vision" tab.</div>
+                    </div>
+                </div>
+
+                <div class="callout info" style="margin-top: 1.5rem;">
+                    <strong>&#128161; Tip</strong>
+                    Update this timeline once the May 7th details are released. Add the actual decision deadline and last day dates.
+                </div>
+
+                <h3>My Timeline Notes</h3>
+                <textarea class="note-area" data-note="timeline-notes" placeholder="Add dates, reminders, or notes as details come in..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== PRE-DEPARTURE CHECKLIST ===== -->
+        <div class="tab-content" id="tab-predeparture">
+            <div class="section">
+                <h2><span class="icon">&#9989;</span> Pre-Departure Checklist</h2>
+                <p>Everything to take care of before your last day at Microsoft</p>
+
+                <h3>HR & Administrative</h3>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-1" data-key="pd-1">
+                    <label for="pd-1">Review the full voluntary retirement offer in detail
+                        <span class="item-detail">Severance amount, payment schedule, signing bonus/clawback, non-compete clauses, release of claims</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-2" data-key="pd-2">
+                    <label for="pd-2">Understand the decision deadline and revocation period
+                        <span class="item-detail">Typically 21-45 days to decide + 7 days revocation after signing (OWBPA if age 40+)</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-3" data-key="pd-3">
+                    <label for="pd-3">Consider having an employment attorney review the offer
+                        <span class="item-detail">Especially important for 20+ year tenured employees — ensure terms are fair</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-4" data-key="pd-4">
+                    <label for="pd-4">Confirm your official last day and what it means for benefits end dates</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-5" data-key="pd-5">
+                    <label for="pd-5">Understand PTO/vacation payout policy
+                        <span class="item-detail">WA state requires payout of accrued vacation; verify sick leave treatment</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-6" data-key="pd-6">
+                    <label for="pd-6">Request your full HR file / employment records
+                        <span class="item-detail">Performance reviews, tenure confirmation letter, compensation history</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-7" data-key="pd-7">
+                    <label for="pd-7">Get letter of recommendation / references while still employed</label>
+                </div>
+
+                <h3>Financial Accounts & Equity</h3>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-10" data-key="pd-10">
+                    <label for="pd-10">Review all unvested RSUs &mdash; what vests before last day, what's forfeited
+                        <span class="item-detail">Check your next vesting dates against potential last day. Negotiate timing if possible.</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-11" data-key="pd-11">
+                    <label for="pd-11">ESPP &mdash; understand current enrollment period
+                        <span class="item-detail">When does the current purchase period end? Will you still be employed? What happens to contributions if you leave mid-period?</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-12" data-key="pd-12">
+                    <label for="pd-12">401(k) &mdash; plan rollover strategy
+                        <span class="item-detail">Roll to IRA? Leave in Fidelity? Mega Backdoor Roth considerations. Do NOT cash out.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-13" data-key="pd-13">
+                    <label for="pd-13">Understand 401(k) employer match &mdash; are you fully vested?
+                        <span class="item-detail">At 20+ years you should be 100% vested, but verify</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-14" data-key="pd-14">
+                    <label for="pd-14">Review any outstanding stock sales / tax lots for capital gains planning</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-15" data-key="pd-15">
+                    <label for="pd-15">Download all Fidelity/MS stock plan statements and transaction history</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-16" data-key="pd-16">
+                    <label for="pd-16">Review HSA balance and ensure it's invested (not just cash)
+                        <span class="item-detail">HSA is yours to keep forever — triple tax advantaged. Keep receipts for future reimbursement.</span>
+                    </label>
+                </div>
+
+                <h3>Insurance & Benefits Transition</h3>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-20" data-key="pd-20">
+                    <label for="pd-20">Evaluate health insurance options for kids (currently on your plan)
+                        <span class="item-detail">Options: COBRA (expensive but familiar), wife's Costco plan, ACA Marketplace, or private. See Benefits tab.</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="pd-21" data-key="pd-21">
+                    <label for="pd-21">Check wife's Costco benefits &mdash; can kids be added? Open enrollment timing?
+                        <span class="item-detail">Losing employer coverage is a qualifying life event &mdash; allows mid-year enrollment</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-med">
+                    <input type="checkbox" id="pd-22" data-key="pd-22">
+                    <label for="pd-22">Review MS life insurance &mdash; convert or get private policy BEFORE leaving
+                        <span class="item-detail">MS group life is typically 1-2x salary. You can usually convert to individual policy within 31 days of leaving. Get quotes NOW while still employed.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-23" data-key="pd-23">
+                    <label for="pd-23">Disability insurance &mdash; review if you need personal coverage</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-24" data-key="pd-24">
+                    <label for="pd-24">Dental and vision &mdash; schedule any pending work before benefits end
+                        <span class="item-detail">Get checkups, fill prescriptions, schedule any procedures before last day</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-25" data-key="pd-25">
+                    <label for="pd-25">FSA &mdash; spend remaining balance before departure (use it or lose it)
+                        <span class="item-detail">FSA funds typically must be used by your last day or within a short grace period</span>
+                    </label>
+                </div>
+
+                <h3>Digital & Access</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-30" data-key="pd-30">
+                    <label for="pd-30">Back up any personal files from MS devices / OneDrive
+                        <span class="item-detail">Personal contacts, documents, photos. You will lose access to OneDrive for Business.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-31" data-key="pd-31">
+                    <label for="pd-31">Update accounts that use your @microsoft.com email
+                        <span class="item-detail">LinkedIn, conference accounts, subscriptions, 2FA, newsletter subscriptions</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-32" data-key="pd-32">
+                    <label for="pd-32">Export contacts / professional network from Outlook / Teams</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-33" data-key="pd-33">
+                    <label for="pd-33">Save copies of pay stubs, W-2s, and tax documents from MS HR portal</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-34" data-key="pd-34">
+                    <label for="pd-34">Review and remove personal authenticator entries tied to MS accounts</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-35" data-key="pd-35">
+                    <label for="pd-35">Transfer or cancel any software licenses tied to MS employee discounts
+                        <span class="item-detail">Office 365 Home Use Program, Visual Studio, Azure credits, etc.</span>
+                    </label>
+                </div>
+
+                <h3>Professional & Relationships</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-40" data-key="pd-40">
+                    <label for="pd-40">Update LinkedIn profile (don't announce departure prematurely)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-41" data-key="pd-41">
+                    <label for="pd-41">Personally reach out to key colleagues and mentors
+                        <span class="item-detail">Exchange personal contact info. These relationships are your most valuable asset after 20+ years.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-42" data-key="pd-42">
+                    <label for="pd-42">Check non-compete / non-solicitation clauses in your agreement
+                        <span class="item-detail">Important for consulting and the AI SMB venture — know what's restricted and for how long</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pd-43" data-key="pd-43">
+                    <label for="pd-43">Understand IP assignment clauses — what can you take vs. what stays at MS</label>
+                </div>
+
+                <h3>My Notes</h3>
+                <textarea class="note-area" data-note="predeparture-notes" placeholder="Add your own items or notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== FINANCIAL PLANNER PREP ===== -->
+        <div class="tab-content" id="tab-financial-prep">
+            <div class="section">
+                <h2><span class="icon">&#128176;</span> Financial Planner Meeting Prep</h2>
+                <p>Documents to gather and topics to discuss — bring this to your meeting after May 7th</p>
+
+                <div class="callout action">
+                    <strong>&#127919; Meeting Goals</strong>
+                    1) Review the voluntary retirement offer terms<br>
+                    2) Assess overall financial health with MS income stopping<br>
+                    3) Create a transition financial plan<br>
+                    4) Optimize tax strategy for departure year
+                </div>
+
+                <h3>Documents to Gather Before the Meeting</h3>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="fp-1" data-key="fp-1">
+                    <label for="fp-1">The voluntary retirement offer letter / package details
+                        <span class="item-detail">Severance terms, payment schedule, benefits continuation period</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="fp-2" data-key="fp-2">
+                    <label for="fp-2">Current total compensation statement from MS
+                        <span class="item-detail">Base salary, bonus, RSU grant schedule, ESPP details</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="fp-3" data-key="fp-3">
+                    <label for="fp-3">Most recent RSU/stock vesting schedule
+                        <span class="item-detail">What's unvested and will be forfeited, what vests before last day</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-4" data-key="fp-4">
+                    <label for="fp-4">401(k) statement — Fidelity (include Mega Backdoor Roth details)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-5" data-key="fp-5">
+                    <label for="fp-5">All brokerage / investment account statements
+                        <span class="item-detail">Including MSFT stock held outside MS plans (Fidelity, Schwab, etc.)</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-6" data-key="fp-6">
+                    <label for="fp-6">HSA account statement and balance</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-7" data-key="fp-7">
+                    <label for="fp-7">Current ESPP enrollment details and contribution rate</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-8" data-key="fp-8">
+                    <label for="fp-8">Last 2 years of tax returns</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-9" data-key="fp-9">
+                    <label for="fp-9">Social Security statement (ssa.gov)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-10" data-key="fp-10">
+                    <label for="fp-10">Monthly household budget / expense breakdown
+                        <span class="item-detail">Mortgage, utilities, insurance, kids, groceries, subscriptions, etc.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-11" data-key="fp-11">
+                    <label for="fp-11">Wife's Costco compensation / benefits summary
+                        <span class="item-detail">Important for modeling household income with MS income gone</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-12" data-key="fp-12">
+                    <label for="fp-12">Outstanding debts — mortgage balance, car loans, etc.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fp-13" data-key="fp-13">
+                    <label for="fp-13">Life insurance policies (both MS group and any personal)</label>
+                </div>
+
+                <h3>Key Questions to Ask Your Financial Planner</h3>
+                <div class="section" style="background: #f8f9fa; border: none; box-shadow: none; padding: 1rem;">
+                    <h3 style="margin-top: 0;">Offer Evaluation</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>Is the severance amount reasonable for 20+ years of tenure?</li>
+                        <li>How will severance payments be taxed? Lump sum vs. installments?</li>
+                        <li>What's the total value of unvested RSUs I'm forfeiting?</li>
+                        <li>Does the offer include any accelerated vesting provisions?</li>
+                        <li>What's the COBRA vs. marketplace vs. Costco insurance comparison?</li>
+                    </ul>
+
+                    <h3>Cash Flow & Runway</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>How many months/years of runway do we have without my MS income?</li>
+                        <li>What's our monthly burn rate and how does it compare to wife's Costco income + severance?</li>
+                        <li>Should we build a larger cash reserve before I leave?</li>
+                        <li>At what point would I need to generate income from consulting/business?</li>
+                    </ul>
+
+                    <h3>Investment & Tax Strategy</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>Should I sell MSFT shares for diversification before or after leaving?</li>
+                        <li>Tax-loss harvesting opportunities in the departure year?</li>
+                        <li>Roth conversion strategy — lower income year = opportunity?</li>
+                        <li>401(k) rollover timing — before or after leaving? Direct to Roth?</li>
+                        <li>Mega Backdoor Roth — any final contributions to maximize?</li>
+                        <li>Capital gains management given reduced income year</li>
+                    </ul>
+
+                    <h3>Insurance Deep Dive</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>Health insurance: compare COBRA, wife's Costco plan (add kids), ACA marketplace</li>
+                        <li>Life insurance: convert MS group policy or get new term life? Cost comparison?</li>
+                        <li>Do I need umbrella / personal liability insurance changes?</li>
+                        <li>Long-term disability — do I need private coverage?</li>
+                    </ul>
+
+                    <h3>Business Planning (AI SMB Venture)</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>Best business structure (LLC, S-Corp) for consulting + AI venture?</li>
+                        <li>Tax advantages of self-employment (Solo 401k, SEP IRA, health insurance deduction)?</li>
+                        <li>How much startup capital should we earmark?</li>
+                        <li>Should the business be a separate entity from consulting?</li>
+                    </ul>
+
+                    <h3>Long-term Planning</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem;">
+                        <li>How does this change our retirement timeline / projections?</li>
+                        <li>Social Security optimization — what's my projected benefit at 62/67/70?</li>
+                        <li>Estate planning — do we need to update wills, trusts, beneficiaries?</li>
+                        <li>Kids' education funding — 529 plans on track?</li>
+                    </ul>
+                </div>
+
+                <h3>My Meeting Notes</h3>
+                <textarea class="note-area" data-note="financial-meeting-notes" placeholder="Capture decisions and action items from your planner meeting..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== BENEFITS & INSURANCE ===== -->
+        <div class="tab-content" id="tab-benefits">
+            <div class="section">
+                <h2><span class="icon">&#127973;</span> Benefits & Insurance Transition</h2>
+                <p>Plan the transition of health, life, and other benefits for you and your kids</p>
+
+                <div class="callout">
+                    <strong>&#9888;&#65039; Critical: Kids' Insurance</strong>
+                    Your kids are currently covered under your MS plan. This is your #1 benefits priority. Losing employer coverage is a <strong>qualifying life event</strong> — you can enroll in a new plan outside of normal open enrollment.
+                </div>
+
+                <h3>Health Insurance Options Comparison</h3>
+                <table class="fin-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                            <th>Est. Monthly Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>COBRA</strong> (MS plan continuation)</td>
+                            <td>Same coverage, same doctors, immediate</td>
+                            <td>Very expensive (full premium + 2% admin), 18 months max</td>
+                            <td><input type="text" data-field="cobra-cost" placeholder="$____/mo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Wife's Costco Plan</strong> (add kids)</td>
+                            <td>Likely most affordable, ongoing coverage</td>
+                            <td>May need to change doctors/network, check kids eligibility</td>
+                            <td><input type="text" data-field="costco-cost" placeholder="$____/mo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>ACA Marketplace</strong></td>
+                            <td>May get subsidies if income drops, many plan options</td>
+                            <td>Can be expensive without subsidies, network changes</td>
+                            <td><input type="text" data-field="aca-cost" placeholder="$____/mo"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Private / Direct</strong></td>
+                            <td>Choose any plan, no employer dependency</td>
+                            <td>Most expensive typically, underwriting</td>
+                            <td><input type="text" data-field="private-cost" placeholder="$____/mo"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Insurance Action Items</h3>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="ins-1" data-key="ins-1">
+                    <label for="ins-1">Call Costco HR — can wife add kids? What's the cost? Network?
+                        <span class="item-detail">Ask about qualifying life event enrollment window and required documentation</span>
+                    </label>
+                </div>
+                <div class="checklist-item priority-high">
+                    <input type="checkbox" id="ins-2" data-key="ins-2">
+                    <label for="ins-2">Get COBRA cost estimate from MS benefits portal</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-3" data-key="ins-3">
+                    <label for="ins-3">Check WA Health Plan Finder (wahealthplanfinder.org) for ACA options</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-4" data-key="ins-4">
+                    <label for="ins-4">Verify all kids' doctors are in potential new networks</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-5" data-key="ins-5">
+                    <label for="ins-5">Schedule pending medical/dental appointments before MS coverage ends</label>
+                </div>
+                <div class="checklist-item priority-med">
+                    <input type="checkbox" id="ins-6" data-key="ins-6">
+                    <label for="ins-6">Life insurance: get term life quotes NOW while still employed
+                        <span class="item-detail">Easier to qualify and better rates while employed. 20-year term for coverage until kids are independent.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-7" data-key="ins-7">
+                    <label for="ins-7">MS life insurance conversion — request conversion paperwork
+                        <span class="item-detail">Must convert within 31 days of losing group coverage. Compare to new term life quotes.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-8" data-key="ins-8">
+                    <label for="ins-8">Review MS supplemental benefits: AD&D, legal plan, pet insurance, etc.
+                        <span class="item-detail">Decide which to replace independently</span>
+                    </label>
+                </div>
+
+                <h3>HSA Strategy</h3>
+                <div class="callout info">
+                    <strong>&#128161; HSA is a Superpower Asset</strong>
+                    Your HSA balance is yours forever, tax-free for medical expenses at any age. After 65, it works like a traditional IRA for non-medical expenses. Keep it invested and growing. Save all medical receipts — you can reimburse yourself years later.
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-9" data-key="ins-9">
+                    <label for="ins-9">Maximize HSA contributions before last day (front-load if possible)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ins-10" data-key="ins-10">
+                    <label for="ins-10">Ensure HSA is invested in growth funds, not sitting in cash</label>
+                </div>
+
+                <h3>Insurance Notes</h3>
+                <textarea class="note-area" data-note="insurance-notes" placeholder="Quotes, plan details, decisions..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== FINANCIAL SNAPSHOT ===== -->
+        <div class="tab-content" id="tab-net-worth">
+            <div class="section">
+                <h2><span class="icon">&#128200;</span> Financial Snapshot Worksheet</h2>
+                <p>Fill in to get a clear picture of where you stand — bring this to your planner meeting</p>
+
+                <div class="callout info">
+                    <strong>&#128274; Privacy Note</strong>
+                    All data is stored locally in your browser only (localStorage). Nothing is sent anywhere. You can clear all data using the button at the bottom.
+                </div>
+
+                <h3>Assets</h3>
+                <table class="fin-table">
+                    <thead><tr><th>Asset</th><th>Value</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cash / Checking / Savings</td><td><input type="text" data-field="asset-cash" placeholder="$"></td><td><input type="text" data-field="asset-cash-note" placeholder="Which accounts"></td></tr>
+                        <tr><td>401(k) Balance</td><td><input type="text" data-field="asset-401k" placeholder="$"></td><td><input type="text" data-field="asset-401k-note" placeholder="Fidelity"></td></tr>
+                        <tr><td>Roth IRA / Mega Backdoor Roth</td><td><input type="text" data-field="asset-roth" placeholder="$"></td><td><input type="text" data-field="asset-roth-note" placeholder=""></td></tr>
+                        <tr><td>Microsoft Stock (vested shares)</td><td><input type="text" data-field="asset-msft" placeholder="$"></td><td><input type="text" data-field="asset-msft-note" placeholder="# of shares"></td></tr>
+                        <tr><td>ESPP Shares</td><td><input type="text" data-field="asset-espp" placeholder="$"></td><td><input type="text" data-field="asset-espp-note" placeholder=""></td></tr>
+                        <tr><td>Other Brokerage / Investments</td><td><input type="text" data-field="asset-brokerage" placeholder="$"></td><td><input type="text" data-field="asset-brokerage-note" placeholder=""></td></tr>
+                        <tr><td>HSA Balance</td><td><input type="text" data-field="asset-hsa" placeholder="$"></td><td><input type="text" data-field="asset-hsa-note" placeholder=""></td></tr>
+                        <tr><td>Home Equity (estimated)</td><td><input type="text" data-field="asset-home" placeholder="$"></td><td><input type="text" data-field="asset-home-note" placeholder="Zillow / Redfin estimate minus mortgage"></td></tr>
+                        <tr><td>Other Real Estate</td><td><input type="text" data-field="asset-realestate" placeholder="$"></td><td><input type="text" data-field="asset-realestate-note" placeholder=""></td></tr>
+                        <tr><td>529 / Education Savings</td><td><input type="text" data-field="asset-529" placeholder="$"></td><td><input type="text" data-field="asset-529-note" placeholder=""></td></tr>
+                        <tr><td>Other Assets</td><td><input type="text" data-field="asset-other" placeholder="$"></td><td><input type="text" data-field="asset-other-note" placeholder=""></td></tr>
+                        <tr class="fin-total"><td>Total Assets</td><td id="total-assets">$0</td><td></td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Liabilities</h3>
+                <table class="fin-table">
+                    <thead><tr><th>Liability</th><th>Balance</th><th>Monthly Payment</th></tr></thead>
+                    <tbody>
+                        <tr><td>Mortgage</td><td><input type="text" data-field="liab-mortgage" placeholder="$"></td><td><input type="text" data-field="liab-mortgage-pmt" placeholder="$/mo"></td></tr>
+                        <tr><td>Car Loan(s)</td><td><input type="text" data-field="liab-car" placeholder="$"></td><td><input type="text" data-field="liab-car-pmt" placeholder="$/mo"></td></tr>
+                        <tr><td>Student Loans</td><td><input type="text" data-field="liab-student" placeholder="$"></td><td><input type="text" data-field="liab-student-pmt" placeholder="$/mo"></td></tr>
+                        <tr><td>Credit Cards</td><td><input type="text" data-field="liab-cc" placeholder="$"></td><td><input type="text" data-field="liab-cc-pmt" placeholder="$/mo"></td></tr>
+                        <tr><td>Other Debt</td><td><input type="text" data-field="liab-other" placeholder="$"></td><td><input type="text" data-field="liab-other-pmt" placeholder="$/mo"></td></tr>
+                        <tr class="fin-total"><td>Total Liabilities</td><td id="total-liabilities">$0</td><td id="total-monthly-debt">$0/mo</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: var(--accent); font-size: 1.1rem; margin-top: 1.5rem;">
+                    Estimated Net Worth: <span id="net-worth">$0</span>
+                </h3>
+
+                <h3>Monthly Cash Flow (Post-MS)</h3>
+                <table class="fin-table">
+                    <thead><tr><th>Income Source</th><th>Monthly Amount</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Wife's Costco Income (net)</td><td><input type="text" data-field="inc-costco" placeholder="$"></td><td><input type="text" data-field="inc-costco-note" placeholder=""></td></tr>
+                        <tr><td>Severance (if monthly)</td><td><input type="text" data-field="inc-severance" placeholder="$"></td><td><input type="text" data-field="inc-severance-note" placeholder="Duration?"></td></tr>
+                        <tr><td>Consulting (projected)</td><td><input type="text" data-field="inc-consulting" placeholder="$"></td><td><input type="text" data-field="inc-consulting-note" placeholder="Estimate"></td></tr>
+                        <tr><td>Other Income</td><td><input type="text" data-field="inc-other" placeholder="$"></td><td><input type="text" data-field="inc-other-note" placeholder=""></td></tr>
+                        <tr class="fin-total"><td>Total Monthly Income</td><td id="total-income">$0</td><td></td></tr>
+                    </tbody>
+                </table>
+
+                <table class="fin-table" style="margin-top: 1rem;">
+                    <thead><tr><th>Monthly Expenses</th><th>Amount</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Housing (mortgage + property tax + insurance)</td><td><input type="text" data-field="exp-housing" placeholder="$"></td><td><input type="text" data-field="exp-housing-note" placeholder=""></td></tr>
+                        <tr><td>Health Insurance (new plan)</td><td><input type="text" data-field="exp-health" placeholder="$"></td><td><input type="text" data-field="exp-health-note" placeholder=""></td></tr>
+                        <tr><td>Utilities & Internet</td><td><input type="text" data-field="exp-utilities" placeholder="$"></td><td><input type="text" data-field="exp-utilities-note" placeholder=""></td></tr>
+                        <tr><td>Groceries & Household</td><td><input type="text" data-field="exp-groceries" placeholder="$"></td><td><input type="text" data-field="exp-groceries-note" placeholder=""></td></tr>
+                        <tr><td>Kids (activities, school, childcare)</td><td><input type="text" data-field="exp-kids" placeholder="$"></td><td><input type="text" data-field="exp-kids-note" placeholder=""></td></tr>
+                        <tr><td>Car (payment, insurance, gas)</td><td><input type="text" data-field="exp-car" placeholder="$"></td><td><input type="text" data-field="exp-car-note" placeholder=""></td></tr>
+                        <tr><td>Subscriptions & Entertainment</td><td><input type="text" data-field="exp-subs" placeholder="$"></td><td><input type="text" data-field="exp-subs-note" placeholder=""></td></tr>
+                        <tr><td>Other Monthly Expenses</td><td><input type="text" data-field="exp-other" placeholder="$"></td><td><input type="text" data-field="exp-other-note" placeholder=""></td></tr>
+                        <tr class="fin-total"><td>Total Monthly Expenses</td><td id="total-expenses">$0</td><td></td></tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 1.5rem;" id="monthly-surplus-label">
+                    Monthly Surplus/Deficit: <span id="monthly-surplus">$0</span>
+                </h3>
+                <p id="runway-estimate" style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"></p>
+
+                <h3>Financial Notes</h3>
+                <textarea class="note-area" data-note="financial-notes" placeholder="Notes about your financial situation, questions for planner..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== POST-MS VISION ===== -->
+        <div class="tab-content" id="tab-post-ms">
+            <div class="section">
+                <h2><span class="icon">&#127775;</span> Post-MS Vision & Focus Areas</h2>
+                <p>What life looks like after Microsoft — ideas, plans, and action items</p>
+
+                <h3>First 30 Days — Decompress & Reset</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-1" data-key="pm-1">
+                    <label for="pm-1">Take real time off — don't jump into the next thing immediately
+                        <span class="item-detail">After 20+ years, give yourself space to decompress. This is important.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-2" data-key="pm-2">
+                    <label for="pm-2">Set up a daily routine / structure (exercise, reading, family time)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-3" data-key="pm-3">
+                    <label for="pm-3">Complete all administrative transitions (insurance, accounts, etc.)</label>
+                </div>
+
+                <h3>AI Automation for SMBs — Venture with Friend</h3>
+                <div class="callout action">
+                    <strong>&#129302; The Opportunity</strong>
+                    AI automation for mom-and-pop businesses around Seattle. Potentially untapped market — small businesses need AI but lack the expertise and budget for enterprise solutions. Your 20+ years of tech experience is a massive advantage.
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-10" data-key="pm-10">
+                    <label for="pm-10">Define the initial scope — what AI automation problems are we solving?
+                        <span class="item-detail">Bookkeeping? Customer service bots? Inventory? Marketing? Start narrow.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-11" data-key="pm-11">
+                    <label for="pm-11">Market research — talk to 10-20 local small businesses about their pain points</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-12" data-key="pm-12">
+                    <label for="pm-12">Define roles with your friend — who does what?
+                        <span class="item-detail">Business/sales vs. technical? Equal partners? Formalize early.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-13" data-key="pm-13">
+                    <label for="pm-13">Set up business entity (LLC likely best to start)
+                        <span class="item-detail">WA State LLC filing, EIN, business bank account. Discuss S-Corp election with planner.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-14" data-key="pm-14">
+                    <label for="pm-14">Build a prototype / MVP for one specific use case</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-15" data-key="pm-15">
+                    <label for="pm-15">Set a budget cap for the venture — how much are you willing to invest before revenue?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-16" data-key="pm-16">
+                    <label for="pm-16">Review non-compete clause — any restrictions on this type of work?</label>
+                </div>
+
+                <h3>Consulting / Freelancing</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-20" data-key="pm-20">
+                    <label for="pm-20">Identify your consulting niche — what's your unique value after 20+ years at MS?
+                        <span class="item-detail">Cloud architecture? AI/ML strategy? DevOps? Enterprise transformation?</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-21" data-key="pm-21">
+                    <label for="pm-21">Set up professional online presence (website, LinkedIn optimization)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-22" data-key="pm-22">
+                    <label for="pm-22">Reach out to your MS network for potential consulting opportunities
+                        <span class="item-detail">Former colleagues, partners, customers. Your network is your biggest asset.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-23" data-key="pm-23">
+                    <label for="pm-23">Determine your consulting rate
+                        <span class="item-detail">Research market rates for your expertise level. Don't undersell yourself.</span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-24" data-key="pm-24">
+                    <label for="pm-24">Set up business infrastructure: invoicing, contracts, professional liability insurance</label>
+                </div>
+
+                <h3>Personal Development & Well-being</h3>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-30" data-key="pm-30">
+                    <label for="pm-30">Build a health & fitness routine (now you have time!)</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-31" data-key="pm-31">
+                    <label for="pm-31">Invest time in family — this is a rare opportunity</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-32" data-key="pm-32">
+                    <label for="pm-32">Learn new skills / certifications that support your next chapter</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="pm-33" data-key="pm-33">
+                    <label for="pm-33">Build community connections outside of Microsoft
+                        <span class="item-detail">Seattle tech meetups, entrepreneur groups, local business associations</span>
+                    </label>
+                </div>
+
+                <h3>Vision & Goals Notes</h3>
+                <textarea class="note-area" data-note="postms-notes" placeholder="Your thoughts on what you want your post-MS life to look like..."></textarea>
+            </div>
+        </div>
+
+        <!-- ===== NOTES ===== -->
+        <div class="tab-content" id="tab-notes">
+            <div class="section">
+                <h2><span class="icon">&#128221;</span> General Notes & Scratch Pad</h2>
+                <p>Capture thoughts, questions, and anything else as it comes up</p>
+
+                <h3>Questions for HR</h3>
+                <textarea class="note-area" data-note="notes-hr" placeholder="Questions to ask MS HR about the program..." style="min-height: 120px;"></textarea>
+
+                <h3>Questions for Attorney (if reviewing offer)</h3>
+                <textarea class="note-area" data-note="notes-attorney" placeholder="Things to flag with an employment attorney..." style="min-height: 120px;"></textarea>
+
+                <h3>Conversations to Have</h3>
+                <textarea class="note-area" data-note="notes-conversations" placeholder="People to talk to, what to discuss..." style="min-height: 120px;"></textarea>
+
+                <h3>General Scratch Pad</h3>
+                <textarea class="note-area" data-note="notes-general" placeholder="Anything else on your mind..." style="min-height: 200px;"></textarea>
+            </div>
+        </div>
+
+        <!-- Action bar -->
+        <div class="action-bar">
+            <button class="btn btn-primary" onclick="exportData()">&#128190; Export All Data (JSON)</button>
+            <button class="btn btn-outline" onclick="importData()">&#128194; Import Data</button>
+            <button class="btn btn-danger" onclick="clearAllData()">&#128465; Clear All Saved Data</button>
+            <input type="file" id="importFile" accept=".json" style="display:none">
+            <span style="font-size: 0.78rem; color: var(--text-light); align-self: center; margin-left: auto;">
+                Last saved: <span id="lastSaved">Never</span>
+            </span>
+        </div>
+    </main>
+
+    <script>
+        // ============================================
+        // LOCAL STORAGE PERSISTENCE
+        // ============================================
+        const STORAGE_KEY = 'prep-life-after-ms';
+
+        function loadData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : {};
+            } catch { return {}; }
+        }
+
+        function saveData(data) {
+            data._lastSaved = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            updateLastSaved(data._lastSaved);
+        }
+
+        function updateLastSaved(iso) {
+            if (!iso) return;
+            const d = new Date(iso);
+            document.getElementById('lastSaved').textContent =
+                d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = loadData();
+            updateLastSaved(data._lastSaved);
+
+            // Restore checkboxes
+            document.querySelectorAll('input[type="checkbox"][data-key]').forEach(cb => {
+                if (data[cb.dataset.key]) {
+                    cb.checked = true;
+                    cb.closest('.checklist-item')?.classList.add('checked');
+                }
+            });
+
+            // Restore text inputs
+            document.querySelectorAll('input[type="text"][data-field]').forEach(input => {
+                if (data[input.dataset.field]) input.value = data[input.dataset.field];
+            });
+
+            // Restore textareas
+            document.querySelectorAll('textarea[data-note]').forEach(ta => {
+                if (data[ta.dataset.note]) ta.value = data[ta.dataset.note];
+            });
+
+            updateProgress();
+            updateFinancials();
+
+            // Event: checkboxes
+            document.querySelectorAll('input[type="checkbox"][data-key]').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const d = loadData();
+                    d[cb.dataset.key] = cb.checked;
+                    saveData(d);
+                    cb.closest('.checklist-item')?.classList.toggle('checked', cb.checked);
+                    updateProgress();
+                });
+            });
+
+            // Event: text inputs (debounced)
+            document.querySelectorAll('input[type="text"][data-field]').forEach(input => {
+                let timer;
+                input.addEventListener('input', () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        const d = loadData();
+                        d[input.dataset.field] = input.value;
+                        saveData(d);
+                        updateFinancials();
+                    }, 500);
+                });
+            });
+
+            // Event: textareas (debounced)
+            document.querySelectorAll('textarea[data-note]').forEach(ta => {
+                let timer;
+                ta.addEventListener('input', () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        const d = loadData();
+                        d[ta.dataset.note] = ta.value;
+                        saveData(d);
+                    }, 800);
+                });
+            });
+
+            // Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                });
+            });
+        });
+
+        // ============================================
+        // PROGRESS TRACKING
+        // ============================================
+        function updateProgress() {
+            const all = document.querySelectorAll('input[type="checkbox"][data-key]');
+            const checked = document.querySelectorAll('input[type="checkbox"][data-key]:checked');
+            const total = all.length;
+            const done = checked.length;
+            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+            document.getElementById('progressPct').textContent = pct + '%';
+            document.getElementById('progressCount').textContent = done;
+            document.getElementById('progressTotal').textContent = total;
+            document.getElementById('progressBar').style.width = pct + '%';
+
+            // Update tab badges
+            const tabs = {
+                'predeparture': 'pd-',
+                'financial-prep': 'fp-',
+                'benefits': 'ins-',
+                'post-ms': 'pm-'
+            };
+            Object.entries(tabs).forEach(([tab, prefix]) => {
+                const tabAll = document.querySelectorAll(`input[data-key^="${prefix}"]`);
+                const tabDone = document.querySelectorAll(`input[data-key^="${prefix}"]:checked`);
+                const btn = document.querySelector(`[data-tab="${tab}"]`);
+                if (btn) {
+                    let badge = btn.querySelector('.tab-badge');
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'tab-badge';
+                        btn.appendChild(badge);
+                    }
+                    badge.textContent = `${tabDone.length}/${tabAll.length}`;
+                }
+            });
+        }
+
+        // ============================================
+        // FINANCIAL CALCULATIONS
+        // ============================================
+        function parseMoney(str) {
+            if (!str) return 0;
+            const num = parseFloat(str.replace(/[^0-9.\-]/g, ''));
+            return isNaN(num) ? 0 : num;
+        }
+
+        function formatMoney(num) {
+            return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        function updateFinancials() {
+            // Assets
+            const assetFields = ['asset-cash', 'asset-401k', 'asset-roth', 'asset-msft', 'asset-espp',
+                'asset-brokerage', 'asset-hsa', 'asset-home', 'asset-realestate', 'asset-529', 'asset-other'];
+            let totalAssets = 0;
+            assetFields.forEach(f => {
+                const el = document.querySelector(`[data-field="${f}"]`);
+                if (el) totalAssets += parseMoney(el.value);
+            });
+            document.getElementById('total-assets').textContent = formatMoney(totalAssets);
+
+            // Liabilities
+            const liabFields = ['liab-mortgage', 'liab-car', 'liab-student', 'liab-cc', 'liab-other'];
+            const liabPmtFields = ['liab-mortgage-pmt', 'liab-car-pmt', 'liab-student-pmt', 'liab-cc-pmt', 'liab-other-pmt'];
+            let totalLiab = 0, totalDebtPmt = 0;
+            liabFields.forEach(f => {
+                const el = document.querySelector(`[data-field="${f}"]`);
+                if (el) totalLiab += parseMoney(el.value);
+            });
+            liabPmtFields.forEach(f => {
+                const el = document.querySelector(`[data-field="${f}"]`);
+                if (el) totalDebtPmt += parseMoney(el.value);
+            });
+            document.getElementById('total-liabilities').textContent = formatMoney(totalLiab);
+            document.getElementById('total-monthly-debt').textContent = formatMoney(totalDebtPmt) + '/mo';
+
+            // Net worth
+            const netWorth = totalAssets - totalLiab;
+            const nwEl = document.getElementById('net-worth');
+            nwEl.textContent = formatMoney(netWorth);
+            nwEl.style.color = netWorth >= 0 ? 'var(--accent)' : 'var(--danger)';
+
+            // Income
+            const incFields = ['inc-costco', 'inc-severance', 'inc-consulting', 'inc-other'];
+            let totalIncome = 0;
+            incFields.forEach(f => {
+                const el = document.querySelector(`[data-field="${f}"]`);
+                if (el) totalIncome += parseMoney(el.value);
+            });
+            document.getElementById('total-income').textContent = formatMoney(totalIncome);
+
+            // Expenses
+            const expFields = ['exp-housing', 'exp-health', 'exp-utilities', 'exp-groceries',
+                'exp-kids', 'exp-car', 'exp-subs', 'exp-other'];
+            let totalExpenses = 0;
+            expFields.forEach(f => {
+                const el = document.querySelector(`[data-field="${f}"]`);
+                if (el) totalExpenses += parseMoney(el.value);
+            });
+            document.getElementById('total-expenses').textContent = formatMoney(totalExpenses);
+
+            // Surplus
+            const surplus = totalIncome - totalExpenses;
+            const surplusEl = document.getElementById('monthly-surplus');
+            surplusEl.textContent = formatMoney(surplus) + '/mo';
+            surplusEl.style.color = surplus >= 0 ? 'var(--accent)' : 'var(--danger)';
+
+            // Runway estimate
+            const runwayEl = document.getElementById('runway-estimate');
+            if (surplus < 0 && totalAssets > 0) {
+                // Only count liquid assets for runway
+                const liquidFields = ['asset-cash', 'asset-brokerage', 'asset-msft', 'asset-espp'];
+                let liquid = 0;
+                liquidFields.forEach(f => {
+                    const el = document.querySelector(`[data-field="${f}"]`);
+                    if (el) liquid += parseMoney(el.value);
+                });
+                const months = Math.floor(liquid / Math.abs(surplus));
+                runwayEl.textContent = `At this burn rate, liquid assets (${formatMoney(liquid)}) would last ~${months} months (${(months/12).toFixed(1)} years). This excludes retirement accounts.`;
+            } else if (surplus >= 0 && totalIncome > 0) {
+                runwayEl.textContent = 'Income covers expenses — positive cash flow.';
+            } else {
+                runwayEl.textContent = '';
+            }
+        }
+
+        // ============================================
+        // EXPORT / IMPORT / CLEAR
+        // ============================================
+        function exportData() {
+            const data = loadData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prep-life-after-ms-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const input = document.getElementById('importFile');
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(imported));
+                        location.reload();
+                    } catch {
+                        alert('Invalid file format. Please select a valid JSON backup.');
+                    }
+                };
+                reader.readAsText(file);
+                input.value = '';
+            };
+            input.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear ALL saved data? This cannot be undone.\n\nTip: Export your data first as a backup.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
